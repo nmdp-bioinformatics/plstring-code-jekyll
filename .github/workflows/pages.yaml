@@ -19,18 +19,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'        # or any supported version
+          ruby-version: '3.3'
           bundler-cache: true
+          working-directory: jekyll-site
+
       - name: Install dependencies
-        run: |
-          bundle install
+        working-directory: jekyll-site
+        run: bundle install
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          source: .
+          # IMPORTANT: paths are relative to repo root
+          source: ./jekyll-site
           destination: ./_site
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
